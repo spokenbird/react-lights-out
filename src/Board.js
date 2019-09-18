@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import Cell from "./Cell";
 import './Board.css';
 
@@ -33,14 +33,15 @@ class Board extends Component {
   static defaultProps = {
     nrows: 5,
     ncols: 5,
-    chanceLightStartsOn: 0.66
+    chanceLightStartsOn: 0.75 // 25% chance of lighting up
   }
 
   constructor(props) {
     super(props);
     this.state = {
       board: this.createBoard(),
-      hasWon: false };
+      hasWon: false
+    };
 
     // TODO: set initial state
   }
@@ -54,7 +55,7 @@ class Board extends Component {
       for (let j = 0; j < this.props.ncols; j++) {
         let random = Math.random()
         board.push(random > this.props.chanceLightStartsOn);
-      } 
+      }
     }
     console.log(board);
     return board
@@ -63,7 +64,7 @@ class Board extends Component {
   /** handle changing a cell: update board & determine if winner */
 
   flipCellsAround(coord) {
-    let {ncols, nrows} = this.props;
+    let { ncols, nrows } = this.props;
     let hasWon = this.state.hasWon;
     let board = this.state.board;
     let [y, x] = coord.split("-").map(Number);
@@ -82,7 +83,23 @@ class Board extends Component {
     // win when every cell is turned off
     // TODO: determine is the game has been won
 
-    this.setState({board, hasWon});
+    this.setState({ board, hasWon });
+  }
+
+
+
+  createTable() {
+    let table = []
+    let count = 0;
+    for (let i = 0; i < 5; i++) {
+      let row = [];
+      for (let j = 0; j < 5; j++) {
+        row.push(<Cell isLit= {this.state.board[count]} />)
+        count += 1;
+      }
+      table.push(<tr>{row}</tr>);
+    }
+    return table;
   }
 
 
@@ -90,9 +107,11 @@ class Board extends Component {
 
   render() {
     return (
-      this.state.board.map((e, idx) => (
-        <Cell />
-      ))
+      <table>
+        <tbody>
+          {this.createTable()}
+        </tbody>
+      </table>
     )
     // if the game is won, just show a winning msg & render nothing else
 
