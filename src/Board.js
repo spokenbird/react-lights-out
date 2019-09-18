@@ -52,9 +52,11 @@ class Board extends Component {
     let board = [];
     // TODO: create array-of-arrays of true/false values
     for (let i = 0; i < this.props.nrows; i++) {
+      let row = [];
+      board.push(row)
       for (let j = 0; j < this.props.ncols; j++) {
         let random = Math.random()
-        board.push(random > this.props.chanceLightStartsOn);
+        row.push(random > this.props.chanceLightStartsOn);
       }
     }
     console.log(board);
@@ -86,30 +88,21 @@ class Board extends Component {
     this.setState({ board, hasWon });
   }
 
-
-
-  createTable() {
-    let table = []
-    let count = 0;
-    for (let i = 0; i < 5; i++) {
-      let row = [];
-      for (let j = 0; j < 5; j++) {
-        row.push(<Cell isLit= {this.state.board[count]} />)
-        count += 1;
-      }
-      table.push(<tr>{row}</tr>);
-    }
-    return table;
-  }
-
-
   /** Render game board or winning message. */
 
   render() {
     return (
       <table>
         <tbody>
-          {this.createTable()}
+          {this.state.board.map((row, ridx) => (
+            <tr key={ridx}>
+              {row.map((cell, cidx) =>
+                <Cell
+                  key={`${ridx}-${cidx}`}
+                  isLit={this.state.board[ridx][cidx]}
+                />)}
+            </tr>
+          ))}
         </tbody>
       </table>
     )
