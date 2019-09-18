@@ -31,8 +31,8 @@ import './Board.css';
 
 class Board extends Component {
   static defaultProps = {
-    nrows: 5,
-    ncols: 5,
+    nrows: 4,
+    ncols: 4,
     chanceLightStartsOn: 0.75 // 25% chance of lighting up
   }
 
@@ -59,7 +59,6 @@ class Board extends Component {
         row.push(random > this.props.chanceLightStartsOn);
       }
     }
-    console.log(board);
     return board
   }
 
@@ -67,12 +66,8 @@ class Board extends Component {
 
   flipCellsAround(coord) {
     let { ncols, nrows } = this.props;
-    let hasWon = this.state.hasWon;
     let board = this.state.board;
     let [y, x] = coord.split("-").map(Number);
-    console.log(y)
-    console.log(x)
-
 
     function flipCell(y, x) {
       // if this coord is actually on board, flip it
@@ -108,13 +103,28 @@ class Board extends Component {
   /** Render game board or winning message. */
 
   render() {
-    console.log(this.state.board);
-
     if (this.isFalse(this.state.board)) {
-      return <h1>You won. Congratulations.</h1>
+      return (
+        <svg viewBox="0 0 800 600">
+        <symbol id="s-text">
+          <text textAnchor="middle" x="50%" y="35%" className="text--line">
+            Congratulations! You Win!
+          </text>
+        </symbol>
+        <g className="g-ants">
+          <use xlinkHref="#s-text" className="text-copy" />     
+          <use xlinkHref="#s-text" className="text-copy" />     
+          <use xlinkHref="#s-text" className="text-copy" />     
+          <use xlinkHref="#s-text" className="text-copy" />     
+          <use xlinkHref="#s-text" className="text-copy" />     
+        </g>
+      </svg>
+      )
     }
     else {
       return (
+        <div>
+        <h1>Can you beat the game?</h1>
         <table>
           <tbody>
             {this.state.board.map((row, ridx) => (
@@ -130,6 +140,7 @@ class Board extends Component {
             ))}
           </tbody>
         </table>
+        </div>
       )
     }
     // if the game is won, just show a winning msg & render nothing else
