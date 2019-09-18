@@ -40,8 +40,8 @@ class Board extends Component {
     super(props);
     this.state = {
       board: this.createBoard(),
-      hasWon: false
     };
+    this.flipCellsAround = this.flipCellsAround.bind(this);
 
     // TODO: set initial state
   }
@@ -70,6 +70,8 @@ class Board extends Component {
     let hasWon = this.state.hasWon;
     let board = this.state.board;
     let [y, x] = coord.split("-").map(Number);
+    console.log(y)
+    console.log(x)
 
 
     function flipCell(y, x) {
@@ -79,33 +81,57 @@ class Board extends Component {
         board[y][x] = !board[y][x];
       }
     }
+    flipCell(y, x);
 
     // TODO: flip this cell and the cells around it
 
+    flipCell(y + 1, x);
+    flipCell(y - 1, x);
+    flipCell(y, x + 1);
+    flipCell(y, x - 1);
     // win when every cell is turned off
     // TODO: determine is the game has been won
 
-    this.setState({ board, hasWon });
+
+    this.setState({ board });
   }
 
+
+  isFalse(board) {
+    for (const arr of board) {
+      for (const item of arr) {
+        if (item !== false) return false;
+      }
+    }
+    return true;
+  }
   /** Render game board or winning message. */
 
   render() {
-    return (
-      <table>
-        <tbody>
-          {this.state.board.map((row, ridx) => (
-            <tr key={ridx}>
-              {row.map((cell, cidx) =>
-                <Cell
-                  key={`${ridx}-${cidx}`}
-                  isLit={this.state.board[ridx][cidx]}
-                />)}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    )
+    console.log(this.state.board);
+
+    if (this.isFalse(this.state.board)) {
+      return <h1>You won. Congratulations.</h1>
+    }
+    else {
+      return (
+        <table>
+          <tbody>
+            {this.state.board.map((row, ridx) => (
+              <tr key={ridx}>
+                {row.map((cell, cidx) =>
+                  <Cell
+                    key={`${ridx}-${cidx}`}
+                    coord={`${ridx}-${cidx}`}
+                    isLit={this.state.board[ridx][cidx]}
+                    flipCellsAroundMe={this.flipCellsAround}
+                  />)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )
+    }
     // if the game is won, just show a winning msg & render nothing else
 
     // TODO
