@@ -30,9 +30,17 @@ import './Board.css';
  **/
 
 class Board extends Component {
+  static defaultProps = {
+    nrows: 5,
+    ncols: 5,
+    chanceLightStartsOn: 0.66
+  }
 
   constructor(props) {
     super(props);
+    this.state = {
+      board: this.createBoard(),
+      hasWon: false };
 
     // TODO: set initial state
   }
@@ -42,6 +50,13 @@ class Board extends Component {
   createBoard() {
     let board = [];
     // TODO: create array-of-arrays of true/false values
+    for (let i = 0; i < this.props.nrows; i++) {
+      for (let j = 0; j < this.props.ncols; j++) {
+        let random = Math.random()
+        board.push(random > this.props.chanceLightStartsOn);
+      } 
+    }
+    console.log(board);
     return board
   }
 
@@ -49,6 +64,7 @@ class Board extends Component {
 
   flipCellsAround(coord) {
     let {ncols, nrows} = this.props;
+    let hasWon = this.state.hasWon;
     let board = this.state.board;
     let [y, x] = coord.split("-").map(Number);
 
@@ -73,7 +89,11 @@ class Board extends Component {
   /** Render game board or winning message. */
 
   render() {
-
+    return (
+      this.state.board.map((e, idx) => (
+        <Cell />
+      ))
+    )
     // if the game is won, just show a winning msg & render nothing else
 
     // TODO
