@@ -1,10 +1,10 @@
 .Cell {
   height: 100px;
   width: 100px;
-  background-color: #014872;
+  background-color: #373c3f;
   border-radius: 10px;
 }
 
 .Cell-lit {
-  background-color: #ffe001;
+  background-color: #2fbfbd;
 }
