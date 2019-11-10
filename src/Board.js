@@ -31,8 +31,8 @@ import './Board.css';
 
 class Board extends Component {
   static defaultProps = {
-    nrows: 4,
-    ncols: 4,
+    nrows: 5,
+    ncols: 5,
     chanceLightStartsOn: 0.75 // 25% chance of lighting up
   }
 
@@ -42,7 +42,7 @@ class Board extends Component {
       board: this.createBoard(),
     };
     this.flipCellsAround = this.flipCellsAround.bind(this);
-
+    this.simulateClicks(this.props.numClicks);
     // TODO: set initial state
   }
 
@@ -55,11 +55,26 @@ class Board extends Component {
       let row = [];
       board.push(row)
       for (let j = 0; j < this.props.ncols; j++) {
-        let random = Math.random()
-        row.push(random > this.props.chanceLightStartsOn);
+        // let random = Math.random()
+        // row.push(random > this.props.chanceLightStartsOn);
+        row.push(false); // all are lit off 
       }
     }
+    console.log(board);
     return board
+  }
+
+
+  simulateClicks(num, board) {
+    console.log(this.props.nrows);
+    let coordArr = []
+    for (let i = 0; i < num; i++) {
+      let firstRandCoord = Math.floor(Math.random() * this.props.nrows);
+      let secondRandCoord = Math.floor(Math.random() * this.props.nrows);
+      let coordToFlip = `${firstRandCoord}-${secondRandCoord}`;
+      console.log(coordToFlip);
+      this.flipCellsAround(coordToFlip);
+    }
   }
 
   /** handle changing a cell: update board & determine if winner */
@@ -105,41 +120,28 @@ class Board extends Component {
   render() {
     if (this.isFalse(this.state.board)) {
       return (
-        <svg viewBox="0 0 800 600">
-        <symbol id="s-text">
-          <text textAnchor="middle" x="50%" y="35%" className="text--line">
-            Congratulations! You Win!
-          </text>
-        </symbol>
-        <g className="g-ants">
-          <use xlinkHref="#s-text" className="text-copy" />     
-          <use xlinkHref="#s-text" className="text-copy" />     
-          <use xlinkHref="#s-text" className="text-copy" />     
-          <use xlinkHref="#s-text" className="text-copy" />     
-          <use xlinkHref="#s-text" className="text-copy" />     
-        </g>
-      </svg>
+        <div id="congratulations">Congratulations! You win.</div>
       )
     }
     else {
       return (
         <div>
-        <h1>Can you beat the game?</h1>
-        <table>
-          <tbody>
-            {this.state.board.map((row, ridx) => (
-              <tr key={ridx}>
-                {row.map((cell, cidx) =>
-                  <Cell
-                    key={`${ridx}-${cidx}`}
-                    coord={`${ridx}-${cidx}`}
-                    isLit={this.state.board[ridx][cidx]}
-                    flipCellsAroundMe={this.flipCellsAround}
-                  />)}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          <h1>Can you beat the game?</h1>
+          <table>
+            <tbody>
+              {this.state.board.map((row, ridx) => (
+                <tr key={ridx}>
+                  {row.map((cell, cidx) =>
+                    <Cell
+                      key={`${ridx}-${cidx}`}
+                      coord={`${ridx}-${cidx}`}
+                      isLit={this.state.board[ridx][cidx]}
+                      flipCellsAroundMe={this.flipCellsAround}
+                    />)}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )
     }
