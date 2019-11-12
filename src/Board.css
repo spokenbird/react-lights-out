@@ -1,17 +1,50 @@
-#congratulations {
-  position: relative;
-  top: 50%;
-  margin: auto;
-  font-size: 2.5em;
-  color: white;
-    text-shadow: white 0px 0px 20px;
-    text-shadow:
-    0 0 5px #fff,
-    0 0 10px #fff,
-    0 0 20px #fff,
-    0 0 40px #0ff,
-    0 0 40px #0ff,
-    0 0 90px #0ff,
-    0 0 100px #0ff,
-    0 0 200px #0ff;
+.game-board {
+  border-spacing: 5px;
+  border-collapse: unset;
+}
+
+svg {
+  display: block;
+  font: 10.5em 'Montserrat';
+  width: 960px;
+  height: 300px;
+  margin: 0 auto;
+}
+
+.text-copy {
+  fill: none;
+  stroke: white;
+  stroke-dasharray: 6% 29%;
+  stroke-width: 5px;
+  stroke-dashoffset: 0%;
+  animation: stroke-offset 3s infinite linear;
+}
+
+.text-copy:nth-child(1){
+stroke: rgb(220, 25, 165);
+animation-delay: -0.5;
+}
+
+.text-copy:nth-child(2){
+stroke: #f581b1;
+animation-delay: -1s;
+}
+
+.text-copy:nth-child(3){
+stroke: #BD0034;
+animation-delay: -1.5s;
+}
+
+.text-copy:nth-child(4){
+stroke: #BD0034;
+animation-delay: -2s;
+}
+
+.text-copy:nth-child(5){
+stroke: #FDB731;
+animation-delay: -2.5s;
+}
+
+@keyframes stroke-offset{
+100% {stroke-dashoffset: -35%;}
 }

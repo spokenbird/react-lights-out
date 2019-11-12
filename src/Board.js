@@ -50,29 +50,23 @@ class Board extends Component {
 
   createBoard() {
     let board = [];
-    // TODO: create array-of-arrays of true/false values
     for (let i = 0; i < this.props.nrows; i++) {
       let row = [];
       board.push(row)
       for (let j = 0; j < this.props.ncols; j++) {
-        // let random = Math.random()
-        // row.push(random > this.props.chanceLightStartsOn);
         row.push(false); // all are lit off 
       }
     }
-    console.log(board);
     return board
   }
 
 
   simulateClicks(num, board) {
     console.log(this.props.nrows);
-    let coordArr = []
     for (let i = 0; i < num; i++) {
       let firstRandCoord = Math.floor(Math.random() * this.props.nrows);
       let secondRandCoord = Math.floor(Math.random() * this.props.nrows);
       let coordToFlip = `${firstRandCoord}-${secondRandCoord}`;
-      console.log(coordToFlip);
       this.flipCellsAround(coordToFlip);
     }
   }
@@ -93,15 +87,11 @@ class Board extends Component {
     }
     flipCell(y, x);
 
-    // TODO: flip this cell and the cells around it
-
     flipCell(y + 1, x);
     flipCell(y - 1, x);
     flipCell(y, x + 1);
     flipCell(y, x - 1);
     // win when every cell is turned off
-    // TODO: determine is the game has been won
-
 
     this.setState({ board });
   }
@@ -120,14 +110,25 @@ class Board extends Component {
   render() {
     if (this.isFalse(this.state.board)) {
       return (
-        <div id="congratulations">Congratulations! You win.</div>
+        <svg viewBox="0 0 960 300">
+        <symbol id="s-text">
+          <text textAnchor="middle" x="50%" y="80%">You win!</text>
+        </symbol>
+        <g className="g-ants">
+          <use xlinkHref="#s-text" className="text-copy" />
+          <use xlinkHref="#s-text" className="text-copy" />
+          <use xlinkHref="#s-text" className="text-copy" />
+          <use xlinkHref="#s-text" className="text-copy" />
+          <use xlinkHref="#s-text" className="text-copy" />
+        </g>
+      </svg>
       )
     }
     else {
       return (
         <div>
-          <h1>Can you beat the game?</h1>
-          <table>
+          <h4 className="my-3">Put all the lights out by clicking on then to win the game!</h4>
+          <table className="game-board d-flex justify-content-center">
             <tbody>
               {this.state.board.map((row, ridx) => (
                 <tr key={ridx}>
@@ -145,13 +146,6 @@ class Board extends Component {
         </div>
       )
     }
-    // if the game is won, just show a winning msg & render nothing else
-
-    // TODO
-
-    // make table board
-
-    // TODO
   }
 }
 
